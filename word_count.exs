@@ -6,18 +6,11 @@ defmodule Word do
   """
   @spec count(String.t()) :: map
   def count(sentence) do
-    lowercase_sentence = String.downcase(sentence)
-    Regex.split(~r/(?![-äöüÄÖÜß])\W+|_/,lowercase_sentence, trim: true)
-    |> Enum.reduce(%{},fn(item, acc) ->
-      add_map(acc, item, acc[item])
+    sentence
+    |> String.downcase
+    |> String.split(~r/(?![-])\W+|_/u, trim: true)
+    |> Enum.reduce(%{},fn (word, acc) ->
+      Map.update(acc,word,1,&(&1+1))
     end)
-  end
-  
-  def add_map(acc, item, nil) do
-    Map.put(acc, item, 1)
-  end
-
-  def add_map(acc, item, value) do
-    Map.put(acc, item, value + 1)
   end
 end
