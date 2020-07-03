@@ -1,4 +1,4 @@
-defmodule Words do
+defmodule Word do
   @doc """
   Count the number of words in the sentence.
 
@@ -6,6 +6,11 @@ defmodule Words do
   """
   @spec count(String.t()) :: map
   def count(sentence) do
-   %{ "word" => 1  }
+    sentence
+    |> String.downcase
+    |> String.split(~r/(?![-])\W+|_/u, trim: true)
+    |> Enum.reduce(%{},fn (word, acc) ->
+      Map.update(acc,word,1,&(&1+1))
+    end)
   end
 end
