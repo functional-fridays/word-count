@@ -9,8 +9,6 @@ defmodule Word do
     sentence
     |> String.downcase
     |> String.split(~r/(?![-])\W+|_/u, trim: true)
-    |> Enum.reduce(%{},fn (word, acc) ->
-      Map.update(acc,word,1,&(&1+1))
-    end)
+    |> Enum.frequencies
   end
 end
